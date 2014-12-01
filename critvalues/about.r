@@ -19,8 +19,8 @@ br(),
 
 div(class="row-fluid",
 strong('Code'),
-p('Source code available at',
-a('FIXME', href='https://FIXME', target="_blank")),
+p('Source code available in my',
+a('hselab-shiny-apps GitHub repo', href='https://github.com/misken/hselab-shiny-apps/tree/master/critvalues', target="_blank")),
 br()
 ),
 div(class="span3", strong('Sources of inspiration and code for learning Shiny'),
