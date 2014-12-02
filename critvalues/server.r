@@ -40,10 +40,20 @@ shinyServer(function(input,output){
     return(input$chkboxDensity)
   })
   
-  # TODO - We can add UI elements for these later
-  transparent <- TRUE
-  tailcolor <- "red"
-  fencecolor <- "blue"
+
+  
+  transparent <- reactive({
+    return(input$chkboxTransparent)
+  })
+  
+  # Tail and fence colors
+  tailcolor <- reactive({
+    return(input$set_tailcolor)
+  })
+  
+  fencecolor <- reactive({
+    return(input$set_fencecolor)
+  })
   
   # TODO - add xkcd style plot option :)
 
@@ -99,7 +109,7 @@ shinyServer(function(input,output){
       
     plottitleformat <- element_text(lineheight=3, face="bold", color="black", size=14)
       
-    if (transparent) {
+    if (transparent()) {
         rejplot <- rejplot + theme_bw() + labs(title=plottitle, x="X", y="density") + theme(plot.title = plottitleformat)
     } else {
         
@@ -110,8 +120,8 @@ shinyServer(function(input,output){
     if (tails==-1 || tails==2) {
         # The geom_ribbon provides the fill and geom_vline the vertical "fence"
         rejplot <- rejplot + geom_ribbon(data=subset(dd,x <= critvalue),aes(ymax=pdf),ymin=0,
-                                         fill=tailcolor,colour=NA,alpha=0.5) +
-          geom_vline(aes(xintercept=critvalue), color=fencecolor, linetype="dashed", size=1)
+                                         fill=tailcolor(),colour=NA,alpha=0.5) +
+          geom_vline(aes(xintercept=critvalue), color=fencecolor(), linetype="dashed", size=1)
         
       rejlabel <- paste("Reject H0 if","\n", "test stat < ",formatC(critvalue,4),".")
       # Annotate with a rejection region message
@@ -121,8 +131,8 @@ shinyServer(function(input,output){
     # Fill right tail if needed
     if (tails==1 || tails==2) {
         rejplot <- rejplot + geom_ribbon(data=subset(dd,x >= -critvalue),aes(ymax=pdf),ymin=0,
-                                         fill=tailcolor,colour=NA,alpha=0.5) +
-          geom_vline(aes(xintercept = -critvalue), color=fencecolor, linetype="dashed", size=1)
+                                         fill=tailcolor(),colour=NA,alpha=0.5) +
+          geom_vline(aes(xintercept = -critvalue), color=fencecolor(), linetype="dashed", size=1)
         
         rejlabel <- paste("Reject H0 if","\n", "test stat > ",formatC(-critvalue,4),".")
         rejplot <- rejplot + annotate("text", x = 3.75, y = 0.10, label = rejlabel)

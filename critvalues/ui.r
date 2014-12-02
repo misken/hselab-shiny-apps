@@ -20,6 +20,11 @@ shinyUI(pageWithSidebar(
     wellPanel( radioButtons("whichtails","Tails type:",c("Two tailed"='two',"Left tailed"='left',"Right tailed"='right'))
     ),
     
+    wellPanel( textInput("set_tailcolor",label="Tail color",value="red"),
+               textInput("set_fencecolor",label="Fence color",value="blue"),
+               checkboxInput("chkboxTransparent", label = "Transparent plot area", value = TRUE)
+    ),
+    
     conditionalPanel(
       condition="input.dist == 't'",
       numericInput("tdf","Degrees of Freedom",15)
